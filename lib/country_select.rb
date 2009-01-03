@@ -28,7 +28,7 @@ module ActionView
           countries_constant = COUNTRIES
         end
 
-        if priority_countries
+        if priority_countries && priority_countries.length!=0
           country_options += options_for_select(priority_countries, selected)
           country_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n"
         end
