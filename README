@@ -5,6 +5,14 @@ Provides a simple helper to get an HTML select list of countries.  The list of c
 
 Users are strongly advised to evaluate the suitability of this list given their user base.
 
+*** added removal option ***
+
+New format is:
+
+  country_select(method, removed_countries = nil, priority_countries = nil, options = {}, html_options = {})
+
+removed_countries is in the form of an Array
+
 Example
 =======
 
