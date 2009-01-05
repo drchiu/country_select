@@ -110,6 +110,16 @@ module ActionView
         "Yemen", "Zambia", "Zimbabwe"] unless const_defined?("COUNTRIES")
     end
     
+    #
+    # Continents => Countries
+    #
+
+    NA_COUNTRIES = ["Canada", "United States", "Mexico"] unless const_defined?("NA_COUNTRIES")
+
+    EUROPEAN_COUNTRIES = ["Austria", "Belgium", "Croatia", "Czech Republic", "Denmark", "Finland", "France", "Germany",
+        "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Luxembourg", "Netherlands", "Norway", "Poland", "Portugal",
+        "Romania", "Slovakia", "Spain", "Sweden", "Switzerland", "United Kingdom"] unless const_defined?("EUROPEAN_COUNTRIES")
+    
     class InstanceTag
       def to_country_select_tag(removed_countries, priority_countries, options, html_options)
         html_options = html_options.stringify_keys
