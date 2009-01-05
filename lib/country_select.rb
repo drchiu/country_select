@@ -12,12 +12,37 @@ module ActionView
         result = original - removed_selection if (removed_selection && removed_selection.class==Array)
       end 
       
+      def set_world_regions_option(removed_countries)
+        if removed_countries
+          world_regions_options = ""
+          na_countries = NA_COUNTRIES-removed_countries
+          european_countries = EUROPEAN_COUNTRIES-removed_countries
+          unless na_countries.empty?
+            @divider = true
+            world_regions_options += options_for_select("North American Countries")
+          end
+          unless european_countries.empty?
+            @divider = true
+            world_regions_options += options_for_select("European Countries") 
+          end
+        end
+      end
+      
+      def set_rest_of_world_option(removed_selection)
+        @divider = true
+        if removed_selection.include?("Rest of World")
+          ''
+        else
+          options_for_select("Rest of World")
+        end
+      end
+      
       # Returns a string of option tags for pretty much any country in the world. Supply a country name as +selected+ to
       # have it marked as the selected option tag. You can also supply an array of countries as +priority_countries+, so
       # that they will be listed above the rest of the (long) list.
       #
       # NOTE: Only the option tags are returned, you have to wrap this call in a regular HTML select tag.
-      def country_options_for_select(selected = nil, removed_countries = nil, priority_countries = nil)
+      def country_options_for_select(selected = nil, removed_countries = nil, priority_countries = nil, world_regions = false, rest_of_world = false)
         country_options = ""
         
         if removed_countries
@@ -26,10 +51,20 @@ module ActionView
           countries_constant = COUNTRIES-removed_countries
         else
           countries_constant = COUNTRIES
+          removed_countries = []
         end
 
-        if priority_countries && priority_countries.length!=0
+        if !priority_countries.empty?
+          @divider = true
           country_options += options_for_select(priority_countries, selected)
+        end
+        
+        country_options += set_world_regions_option(removed_countries) if world_regions
+        
+        country_options += set_rest_of_world_option(removed_countries) if rest_of_world
+        
+        # add a spacer between priority countries/regions to the rest of the countries
+        if @divider
           country_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n"
         end
 
@@ -82,7 +117,7 @@ module ActionView
         value = value(object)
         content_tag("select",
           add_options(
-            country_options_for_select(value, removed_countries, priority_countries),
+            country_options_for_select(value, removed_countries, priority_countries, options[:world_regions], options[:rest_of_world]),
             options, value
           ), html_options
         )
