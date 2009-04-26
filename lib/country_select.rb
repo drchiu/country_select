@@ -26,6 +26,7 @@ module ActionView
             world_regions_options += options_for_select("European Countries") 
           end
         end
+        return world_regions_options
       end
       
       def set_rest_of_world_option(removed_selection)
@@ -54,11 +55,13 @@ module ActionView
           removed_countries = []
         end
 
-        if !priority_countries.empty?
+        if !priority_countries.blank?
           @divider = true
           country_options += options_for_select(priority_countries, selected)
         end
-        
+
+#        raise "#{country_options.class}"
+        #country_options += "<option value='asdf'>asdf</option>" #+= set_world_regions_option(removed_countries) if world_regions
         country_options += set_world_regions_option(removed_countries) if world_regions
         
         country_options += set_rest_of_world_option(removed_countries) if rest_of_world
